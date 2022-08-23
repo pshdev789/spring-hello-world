@@ -1,0 +1,113 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'jacoco'
+}
+
+group = 'spring.hello.world'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//Add healthcheck endpoint
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	//HttpClient for call api
+	implementation 'org.apache.httpcomponents:httpclient:4.5.10'
+	implementation 'org.apache.commons:commons-lang3:3.9'
+	implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+
+	implementation 'org.apache.commons:commons-text:1.8'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2',
+			'io.jsonwebtoken:jjwt-jackson:0.11.2'
+	implementation 'javax.xml.bind:jaxb-api:2.2.4'
+	implementation 'org.bouncycastle:bcprov-jdk16:1.45'
+	implementation 'org.bouncycastle:bcprov-ext-jdk16:1.46'
+
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "org.mockito:mockito-core:3.+"
+	testImplementation "org.mockito:mockito-inline:3.+"
+	testImplementation 'org.springframework.security:spring-security-test'
+	testCompileOnly 'org.projectlombok:lombok'
+
+
+	components {
+		withModule('org.springframework:spring-beans') {
+			allVariants {
+				withDependencyConstraints {
+					// Need to patch constraints because snakeyaml is an optional dependency
+					it.findAll { it.name == 'snakeyaml' }.each { it.version { strictly '1.19' } }
+				}
+			}
+		}
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = "0.8.5"
+}
+
+/*jacocoTestReport {
+  afterEvaluate {
+    classDirectories = files(classDirectories.files.collect {
+      fileTree(dir: it, exclude: [
+          'io/reflectoring/coverage/ignored/**',
+          'io/reflectoring/coverage/part/**'
+      ])
+    })
+  }
+}*/
+
+jacocoTestReport {
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					'jp/co/rakuten/rms/rsf/api/*/model/*',
+					'jp/co/rakuten/rms/rsf/shop/bff/model/*',
+					'jp/co/rakuten/rms/rsf/common/*',
+					'jp/co/rakuten/rms/rsf/shop/bff/exception/*',
+					'jp/co/rakuten/rms/rsf/shop/bff/util/*Dummy*',
+					'jp/co/rakuten/rms/rsf/shop/bff/filter/AccessObserver*',
+					'jp/co/rakuten/rms/rsf/api/shopbiz/constant*',
+					'jp/co/rakuten/rms/rsf/api/handler*',
+					'jp/co/rakuten/rms/rsf/api/config*',
+					'jp/co/rakuten/rms/rsf/shop/bff/handler*'
+			])
+		}))
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+
+// Uncomment the following rules to see if they're failing.
+// The rules are commented out so that the build is green!
+
+		rule {
+			element = 'CLASS'
+			limit {
+				counter = 'BRANCH'
+				value = 'COVEREDRATIO'
+				minimum = 0.0
+			}
+		}
+	}
+}
+
+test.finalizedBy jacocoTestReport
+
+
