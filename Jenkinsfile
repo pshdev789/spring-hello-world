@@ -1,12 +1,12 @@
 #!/bin/groovy
 pipeline {
     agent { label 'JDK11' } 
-    tools {
-        jdk 'JDK11'
-    }
-    options {
-        skipDefaultCheckout()
-    }
+  //  tools {
+  //      jdk 'JDK11'
+  //  }
+  //  options {
+  //      skipDefaultCheckout()
+  //  }
 
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: 'dev', description: 'What TAG / BRANCH to build?')
