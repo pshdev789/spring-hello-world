@@ -18,7 +18,7 @@ pipeline {
     stages {
 
            stage('Checkout') {
-                checkout scm: [$class: 'GitSCM', branches: [[name: "$BRANCH_NAME"]]s
+                       bat "https://git.rakuten-it.com/users/ts-pushpabh.kodikara/repos/spring-hello-world"
             }
            stage('Build') {
                        steps {
