@@ -17,6 +17,19 @@ pipeline {
 
     stages {
 
+           stage('Checkout') {
+                checkout scm: [$class: 'GitSCM', branches: [[name: "$BRANCH_NAME"]]s
+            }
+           stage('Build') {
+                       steps {
+                           sh './gradlew assemble'
+                       }
+                   }
+                   stage('Test') {
+                       steps {
+                           sh './gradlew test'
+                       }
+                   }
 
            stage('Test & Jacoco Static Analysis') {
                      junit 'target/surefire-reports/**/*.xml'
