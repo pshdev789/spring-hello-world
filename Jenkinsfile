@@ -35,12 +35,15 @@ pipeline {
                    }
 
            stage('Test & Jacoco Static Analysis') {
+             steps{
                      junit 'target/surefire-reports/**/*.xml'
                      jacoco()
                  }//jacoco
+           }
            stage ('Deploy on this Server') {
+             steps{
                              deploy adapters: [tomcat9(credentialsId: 'TOMCAT_CREDENTIAL_IN_SETTINGS', path: '', url: 'http://localhost:8088')], contextPath: null, war: '**/*.war'
-           }//
-           Deploy
-  }//stage
+                }
+             }//Deploy
+  }//stages
 }//pipeline
