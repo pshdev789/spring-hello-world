@@ -20,7 +20,7 @@ pipeline {
            stage('Checkout') {
                steps {
                        //bat "https://git.rakuten-it.com/users/ts-pushpabh.kodikara/repos/spring-hello-world"
-             	 git branch: 'dev', url: 'https://git.rakuten-it.com/users/ts-pushpabh.kodikara/repos/spring-hello-world.git'
+             	 git branch: 'dev', url: 'https://github.com/pshdev789/spring-hello-world.git'
                }
             }
            stage('Build') {
