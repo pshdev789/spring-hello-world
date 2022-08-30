@@ -2,7 +2,7 @@
 pipeline {
     agent any
    tools {
-       jdk 'JDK11'
+       jdk 'openjdk-11'
    }
    options {
        skipDefaultCheckout()
@@ -26,6 +26,11 @@ pipeline {
            stage('Build') {
                        steps {
                            sh './gradlew assemble'
+                           sh '''
+                             env | grep -e PATH -e JAVA_HOME
+                             which java
+                             java -version
+                           '''
                        }
                    }
                    stage('Test') {
