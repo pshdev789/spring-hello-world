@@ -2,7 +2,7 @@
 pipeline {
     agent any
    tools {
-       jdk 'openjdk-11'
+       jdk 'JDK11'
    }
    options {
        skipDefaultCheckout()
