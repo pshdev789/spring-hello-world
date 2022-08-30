@@ -1,6 +1,6 @@
 #!/bin/groovy
 pipeline {
-    agent { label 'JDK11' }
+    agent any
    tools {
        jdk 'JDK11'
    }
